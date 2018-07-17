@@ -1,4 +1,4 @@
-package br.edu.ufcg.ccc.daca.backend.entities.dto;
+package br.edu.ufcg.ccc.daca.backend.entity.dto;
 
 public class ProductDTO {
 

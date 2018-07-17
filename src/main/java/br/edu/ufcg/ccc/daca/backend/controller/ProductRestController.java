@@ -1,4 +1,4 @@
-package br.edu.ufcg.ccc.daca.backend.controllers;
+package br.edu.ufcg.ccc.daca.backend.controller;
 
 import java.util.Collection;
 import java.util.List;
@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import br.edu.ufcg.ccc.daca.backend.entities.Product;
-import br.edu.ufcg.ccc.daca.backend.services.ProductService;
+import br.edu.ufcg.ccc.daca.backend.entity.Product;
+import br.edu.ufcg.ccc.daca.backend.service.ProductService;
 
 import static org.springframework.http.HttpStatus.*;
 

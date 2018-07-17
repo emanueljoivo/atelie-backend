@@ -1,9 +1,9 @@
-package br.edu.ufcg.ccc.daca.backend.services;
+package br.edu.ufcg.ccc.daca.backend.service;
 
 import java.util.Collection;
 import java.util.Optional;
 
-import br.edu.ufcg.ccc.daca.backend.entities.Product;
+import br.edu.ufcg.ccc.daca.backend.entity.Product;
 
 public interface ProductService {
 
