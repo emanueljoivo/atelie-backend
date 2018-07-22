@@ -1,26 +1,28 @@
 package br.edu.ufcg.ccc.daca.backend.controller;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import br.edu.ufcg.ccc.daca.backend.payload.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import br.edu.ufcg.ccc.daca.backend.entity.Product;
 import br.edu.ufcg.ccc.daca.backend.service.ProductService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/product")
-public class ProductRestController {
+public class ProductAPI {
 
 	private ProductService productService;
 
 	@Autowired
-	public ProductRestController(ProductService productService) {
+	public ProductAPI(ProductService productService) {
 		this.productService = productService;
 	}
 
@@ -35,17 +37,19 @@ public class ProductRestController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Product> getProductById(@PathVariable String id) {
+	public ResponseEntity<?> getProductById(@PathVariable String id) {
 		final Long productId;
 
 		try { productId = Long.parseLong(id); } catch (Exception e) {
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.badRequest().body(new ApiResponse(false,
+					"The product ID is invalid."));
 		}
 
 		Optional<Product> p = this.productService.findProductById(productId);
 
-		return p.map(ResponseEntity::ok).
-				orElseGet(() -> ResponseEntity.notFound().build());
+		if (!p.isPresent()) {ResponseEntity.notFound().build();}
+
+		return ResponseEntity.ok(new ApiResponse(true, "Sucess! Product found."));
 	}
 
 	@GetMapping(value = "/all")
@@ -56,23 +60,29 @@ public class ProductRestController {
 			return ResponseEntity.noContent().build();
 		}
 
-		return new ResponseEntity<>(allProducts, HttpStatus.OK);
+		return new ResponseEntity<>(allProducts, OK);
 	}
 
 	@PostMapping(value = "/save")
-	public int saveProduct(@RequestBody Product product) {
+	public ResponseEntity<?> saveProduct(@RequestBody Product product) {
 
-	    if (product.getId() != null) return METHOD_NOT_ALLOWED.value();
+	    if (product.getId() != null) return ResponseEntity.unprocessableEntity().body(new ApiResponse(false,
+				"The format of this product is invalid.", METHOD_NOT_ALLOWED.value()));
 
         try { this.productService.saveProduct(product); } catch (Exception e) {
-			System.out.println(e.toString());
-            return BAD_REQUEST.value();
+			return ResponseEntity.badRequest().body(new ApiResponse(false,
+					"Product not saved", INTERNAL_SERVER_ERROR.value()));
         }
 
-        return ACCEPTED.value();
+		URI location = ServletUriComponentsBuilder
+				.fromCurrentContextPath().path("/{id}")
+				.buildAndExpand(product.getId()).toUri();
+
+        return ResponseEntity.created(location).body(new ApiResponse(true,
+				"Product created successfully!"));
 	}
 
-	@PostMapping(value = "/saveAll")
+	@PostMapping(value = "/save-all")
 	public ResponseEntity<List<Product>> saveAllProducts(@RequestBody List<Product> products) {
 
 		try {
@@ -85,35 +95,45 @@ public class ProductRestController {
 	}
 
 	@PutMapping(value = "/update")
-    public int updateProduct(@RequestBody Product product) {
+    public ResponseEntity<?> updateProduct(@RequestBody Product product) {
         if ((product.getId() == null) ||
                 (!this.productService.hasProduct(product.getId()))) {
-            return NOT_FOUND.value();
+            return ResponseEntity.notFound().build();
         }
 
         try {
             this.productService.saveProduct(product);
-        } catch (Exception e) { return BAD_REQUEST.value(); }
+        } catch (Exception e) { return ResponseEntity.unprocessableEntity().body(
+        		new ApiResponse(false, "Product not saved",
+						INTERNAL_SERVER_ERROR.value())
+		); }
 
-        return CREATED.value();
+		URI location = ServletUriComponentsBuilder
+				.fromCurrentContextPath().path("/{id}")
+				.buildAndExpand(product.getId()).toUri();
+
+        return ResponseEntity.created(location).body(new ApiResponse(true,
+				"Product updated successfully!", CREATED.value()));
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public int deleteProduct(@PathVariable String id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable String id) {
         final Long productId;
 
         try { productId = Long.parseLong(id); } catch (Exception e) {
-            return BAD_REQUEST.value();
+            return ResponseEntity.badRequest().body(new ApiResponse(false,
+					"The product ID is invalid."));
         }
 
         if (!this.productService.hasProduct(productId)) {
-            return NOT_FOUND.value();
+            return ResponseEntity.notFound().build();
         }
 
         try { this.productService.deleteProduct(productId); } catch (Exception e) {
-            return BAD_REQUEST.value();
+            return ResponseEntity.badRequest().body(new ApiResponse(false,
+					"Product could not be deleted.", INTERNAL_SERVER_ERROR.value()));
         }
 
-        return OK.value();
+        return ResponseEntity.ok(new ApiResponse(true, "Product deleted successfully!"));
     }
 }
