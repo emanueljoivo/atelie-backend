@@ -1,7 +1,4 @@
-package br.edu.ufcg.ccc.daca.backend.entities;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+package br.edu.ufcg.ccc.daca.backend.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

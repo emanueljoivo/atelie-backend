@@ -1,4 +1,4 @@
-package br.edu.ufcg.ccc.daca.backend.services;
+package br.edu.ufcg.ccc.daca.backend.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,8 +8,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.edu.ufcg.ccc.daca.backend.entities.Product;
-import br.edu.ufcg.ccc.daca.backend.repositories.ProductRepository;
+import br.edu.ufcg.ccc.daca.backend.entity.Product;
+import br.edu.ufcg.ccc.daca.backend.repository.ProductRepository;
 
 import javax.validation.constraints.NotNull;
 
