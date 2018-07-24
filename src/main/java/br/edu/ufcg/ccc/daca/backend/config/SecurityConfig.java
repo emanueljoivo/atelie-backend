@@ -78,11 +78,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.jpg",
                         "/**/*.html",
                         "/**/*.css",
-                        "/**/*.js")
-                .permitAll()
-                .antMatchers("/auth/**").permitAll()
+                        "/**/*.js").permitAll()
+                .antMatchers("/product/{id}").permitAll()
+                .antMatchers("/product/all").permitAll()
+                .antMatchers("/auth/login").permitAll()
                 .anyRequest().authenticated();
-
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
