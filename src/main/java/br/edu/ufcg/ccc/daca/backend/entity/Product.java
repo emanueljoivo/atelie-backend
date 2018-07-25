@@ -5,23 +5,23 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "products")
+@Table(name = "PRODUCTS")
 public class Product implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "product_id", nullable = false)
+    @Column(name = "PRODUCT_ID", nullable = false)
 	private Long id;
 
     @NotNull
     @Basic(optional = false)
-    @Column(name = "product_description", nullable = false)
+    @Column(name = "PRODUCT_DESCRIPTION", nullable = false)
 	private String description;
 
 	@NotNull
     @Basic(optional = false)
-    @Column(name = "product_category", nullable = false)
+    @Column(name = "PRODUCT_CATEGORY", nullable = false)
 	private String category;
 
 	public Product(){}

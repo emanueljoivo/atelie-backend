@@ -4,23 +4,22 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "solicitations")
+@Table(name = "SOLICITATIONS")
 public class Solicitation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "solicitation_id", nullable = false)
+    @Column(name = "SOLICITATION_ID", nullable = false)
     private Long id;
 
-    @NotNull
-    @Basic(optional = false)
-    @Column(name = "solicitation_sender", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "SOLICITATION_SENDER")
     private Sender sender;
 
     @NotNull
     @Basic(optional = false)
-    @Column(name = "solicitation_content", nullable = false)
+    @Column(name = "SOLICITATION_CONTENT", nullable = false)
     private String content;
 
     public Solicitation(){}
