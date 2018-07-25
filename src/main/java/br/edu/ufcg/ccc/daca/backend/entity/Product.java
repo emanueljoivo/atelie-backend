@@ -5,71 +5,47 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "products")
+@Table(name = "PRODUCTS")
 public class Product implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "PRODUCT_ID", nullable = false)
 	private Long id;
 
     @NotNull
     @Basic(optional = false)
-    @Column(name = "product_description", nullable = false)
+    @Column(name = "PRODUCT_DESCRIPTION", nullable = false)
 	private String description;
 
 	@NotNull
     @Basic(optional = false)
-    @Column(name = "product_category", nullable = false)
+    @Column(name = "PRODUCT_CATEGORY", nullable = false)
 	private String category;
 
 	public Product(){}
 
 	public Product(Long id, String description, String category) {
-		setId(id);
-	    setDescription(description);
-	    setCategory(category);
+		this.id = id;
+	    this.description = description;
+	    this.category = category;
     }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Product product = (Product) o;
+
+		return id.equals(product.id);
+	}
+
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		return result;
+		return id.hashCode();
 	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Product other = (Product) obj;
-		if (id != other.id)
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		return true;
-	}
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) { this.id = id; }
 
 	/**
 	 * @return the id

@@ -63,7 +63,7 @@ public class ProductAPI {
 		return new ResponseEntity<>(allProducts, OK);
 	}
 
-	@PostMapping(value = "/save")
+	@PostMapping(value = "/new")
 	public ResponseEntity<?> saveProduct(@RequestBody Product product) {
 
 	    if (product.getId() != null) return ResponseEntity.unprocessableEntity().body(new ApiResponse(false,

@@ -1,10 +1,11 @@
 package br.edu.ufcg.ccc.daca.backend.entity;
 
+import br.edu.ufcg.ccc.daca.backend.constants.RoleName;
 import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "ROLES")
 public class Role {
 
     @Id

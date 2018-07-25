@@ -1,7 +1,7 @@
 package br.edu.ufcg.ccc.daca.backend.controller;
 
 import br.edu.ufcg.ccc.daca.backend.entity.Role;
-import br.edu.ufcg.ccc.daca.backend.entity.RoleName;
+import br.edu.ufcg.ccc.daca.backend.constants.RoleName;
 import br.edu.ufcg.ccc.daca.backend.entity.User;
 import br.edu.ufcg.ccc.daca.backend.exception.AppException;
 import br.edu.ufcg.ccc.daca.backend.payload.ApiResponse;
@@ -47,7 +47,7 @@ public class AuthAPI {
     @Autowired
     JwtTokenProvider tokenProvider;
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -78,7 +78,7 @@ public class AuthAPI {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+        Role userRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
                 .orElseThrow(() -> new AppException("User Role not set."));
 
         user.setRoles(Collections.singleton(userRole));
