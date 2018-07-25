@@ -1,5 +1,6 @@
 package br.edu.ufcg.ccc.daca.backend.entity;
 
+import br.edu.ufcg.ccc.daca.backend.constants.RoleName;
 import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 
