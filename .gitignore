@@ -1,4 +1,6 @@
-gitflow/
+backend.iml
+mvnw
+mvnw.cmd
 /target/
 .mvn
 ### STS ###
