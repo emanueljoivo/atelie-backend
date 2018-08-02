@@ -47,7 +47,7 @@ public class AuthAPI {
     @Autowired
     JwtTokenProvider tokenProvider;
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -79,7 +79,7 @@ public class AuthAPI {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role userRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-                .orElseThrow(() -> new AppException("User Role not set."));
+                .orElseThrow(() -> new AppException("Admin Role not set."));
 
         user.setRoles(Collections.singleton(userRole));
 
