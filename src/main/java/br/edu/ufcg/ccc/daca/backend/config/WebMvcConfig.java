@@ -11,12 +11,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins(
-                    "http://localhost:8080",
-                    "https://assueria-b46eb.firebaseapp.com",
-                    "https://assueria-client.firebaseapp.com")
-                .allowedMethods("POST", "GET", "PUT", "DELETE")
-                .allowedHeaders("Content-Type")
-                .allowCredentials(false)
-                .maxAge(6000);
+                        "http://localhost:8080",
+                        "https://assueria.firebaseapp.com",
+                        "https://assueria-b46eb.firebaseapp.com"
+                );
     }
 }
