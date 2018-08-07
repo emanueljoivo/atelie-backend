@@ -47,7 +47,7 @@ public class CORSFilter implements Filter {
 
             // Access-Control-Allow-Headers
             response.setHeader("Access-Control-Allow-Headers",
-                    "Origin, X-Requested-With, Content-Type, Accept, " + "X-CSRF-TOKEN" + "Authorization");
+                    "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         }
 
         chain.doFilter(req, res);
