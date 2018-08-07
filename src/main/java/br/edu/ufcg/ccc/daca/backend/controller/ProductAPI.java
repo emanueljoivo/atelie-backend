@@ -2,10 +2,10 @@ package br.edu.ufcg.ccc.daca.backend.controller;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import br.edu.ufcg.ccc.daca.backend.payload.ApiResponse;
+import br.edu.ufcg.ccc.daca.backend.payload.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,9 +47,10 @@ public class ProductAPI {
 
 		Optional<Product> p = this.productService.findProductById(productId);
 
-		if (!p.isPresent()) {ResponseEntity.notFound().build();}
+		if (!p.isPresent()) {return ResponseEntity.notFound().build();}
 
-		return ResponseEntity.ok(new ApiResponse(true, "Sucess! Product found.", OK.value(), p));
+		return ResponseEntity.ok(new ProductResponse(true, "Sucess! Product found.",
+				OK.value(), p.get()));
 	}
 
 	@GetMapping(value = "/all")
@@ -66,11 +67,13 @@ public class ProductAPI {
 	@PostMapping(value = "/new")
 	public ResponseEntity<?> saveProduct(@RequestBody Product product) {
 
-	    if (product.getId() != null) return ResponseEntity.unprocessableEntity().body(new ApiResponse(false,
+	    if (product.getId() != null) return ResponseEntity.unprocessableEntity().body(new ProductResponse(false,
 				"The format of this product is invalid.", METHOD_NOT_ALLOWED.value()));
 
-        try { this.productService.saveProduct(product); } catch (Exception e) {
-			return ResponseEntity.badRequest().body(new ApiResponse(false,
+		Product p;
+
+	    try { p = this.productService.saveProduct(product); } catch (Exception e) {
+			return ResponseEntity.badRequest().body(new ProductResponse(false,
 					"Product not saved", INTERNAL_SERVER_ERROR.value()));
         }
 
@@ -78,20 +81,8 @@ public class ProductAPI {
 				.fromCurrentContextPath().path("/{id}")
 				.buildAndExpand(product.getId()).toUri();
 
-        return ResponseEntity.created(location).body(new ApiResponse(true,
-				"Product created successfully!", CREATED.value()));
-	}
-
-	@PostMapping(value = "/save-all")
-	public ResponseEntity<?> saveAllProducts(@RequestBody List<Product> products) {
-
-		try {
-			this.productService.saveAllProducts(products);
-		} catch (Exception e){
-			return ResponseEntity.badRequest().build();
-		}
-
-		return ResponseEntity.ok(new ApiResponse(true, "All products saved successfully!", OK.value()));
+        return ResponseEntity.created(location).body(new ProductResponse(true,
+				"Product created successfully!", CREATED.value(), p));
 	}
 
 	@PutMapping(value = "/update")
@@ -104,7 +95,7 @@ public class ProductAPI {
         try {
             this.productService.saveProduct(product);
         } catch (Exception e) { return ResponseEntity.unprocessableEntity().body(
-        		new ApiResponse(false, "Product not saved",
+        		new ProductResponse(false, "Product not saved",
 						INTERNAL_SERVER_ERROR.value())
 		); }
 
@@ -121,7 +112,7 @@ public class ProductAPI {
         final Long productId;
 
         try { productId = Long.parseLong(id); } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ApiResponse(false,
+            return ResponseEntity.badRequest().body(new ProductResponse(false,
 					"The product ID is invalid."));
         }
 
@@ -130,7 +121,7 @@ public class ProductAPI {
         }
 
         try { this.productService.deleteProduct(productId); } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ApiResponse(false,
+            return ResponseEntity.badRequest().body(new ProductResponse(false,
 					"Product could not be deleted.", INTERNAL_SERVER_ERROR.value()));
         }
 

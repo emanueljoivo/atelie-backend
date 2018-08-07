@@ -24,29 +24,10 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public void saveProduct(Product product) {
-		this.productRepository.save(product);
+	public Product saveProduct(Product product) {
+		return this.productRepository.save(product);
 	}
 
-	@Override
-	public void saveAllProducts(Collection<Product> products) throws IllegalArgumentException{
-		if (products.isEmpty()) throw new IllegalArgumentException();
-
-		List<Product> ableProducts = new ArrayList<>();
-		List<Product> unableProducts = new ArrayList<>();
-
-		products.forEach( (Product p) -> {
-			if (p.getId() == null) {
-				ableProducts.add ( p );
-			}
-			else
-				unableProducts.add(p);
-		});
-
-		products.forEach ( p -> {
-            this.productRepository.save(p);
-        });
-    }
 
 	@Override
 	public Collection<Product> listAllProducts() {

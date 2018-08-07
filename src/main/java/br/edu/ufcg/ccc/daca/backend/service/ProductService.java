@@ -7,9 +7,7 @@ import br.edu.ufcg.ccc.daca.backend.entity.Product;
 
 public interface ProductService {
 
-	void saveProduct(Product product);
-
-	void saveAllProducts(Collection<Product> products);
+	Product saveProduct(Product product);
 
 	Collection<Product> listAllProducts();
 

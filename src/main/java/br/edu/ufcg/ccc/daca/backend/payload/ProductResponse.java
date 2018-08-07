@@ -1,19 +1,32 @@
 package br.edu.ufcg.ccc.daca.backend.payload;
 
-public class ApiResponse {
+import br.edu.ufcg.ccc.daca.backend.entity.Product;
+
+public class ProductResponse {
+
     private Boolean success;
     private String message;
     private int statusCode;
+    private Product product;
 
-    public ApiResponse(Boolean success, String message) {
+    public ProductResponse(Boolean success, String message) {
         this.success = success;
         this.message = message;
     }
 
-    public ApiResponse(Boolean success, String message, int statusCode) {
+    public ProductResponse(Boolean success, String message, int statusCode) {
         this(success, message);
         this.statusCode = statusCode;
     }
+
+    public ProductResponse(Boolean success, String message, int statusCode, Product product) {
+        this(success, message, statusCode);
+        this.product = product;
+    }
+
+    public Product getProduct() {return product;};
+
+    public void setProduct(Product product) { this.product = product; }
 
     public Boolean getSuccess() {
         return success;
