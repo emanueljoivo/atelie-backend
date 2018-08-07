@@ -20,7 +20,10 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CORSFilter implements Filter {
 
-    private final List<String> allowedOrigins = Arrays.asList("http://localhost:4200");
+    private final List<String> allowedOrigins = Arrays.asList(
+            "http://localhost:8080",
+            "https://assueria-b46eb.firebaseapp.com"
+    );
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         // Lets make sure that we are working with HTTP (that is, against HttpServletRequest and HttpServletResponse objects)
@@ -30,7 +33,7 @@ public class CORSFilter implements Filter {
 
             // Access-Control-Allow-Origin
             String origin = request.getHeader("Origin");
-            response.setHeader("Access-Control-Allow-Origin", allowedOrigins.contains(origin) ? origin : "");
+            response.setHeader("Access-Control-Allow-Origin", allowedOrigins.contains(origin) ? origin : "*");
             response.setHeader("Vary", "Origin");
 
             // Access-Control-Max-Age
