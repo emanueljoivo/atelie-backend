@@ -4,6 +4,7 @@ public class ApiResponse {
     private Boolean success;
     private String message;
     private int statusCode;
+    private Object body;
 
     public ApiResponse(Boolean success, String message) {
         this.success = success;
@@ -13,6 +14,11 @@ public class ApiResponse {
     public ApiResponse(Boolean success, String message, int statusCode) {
         this(success, message);
         this.statusCode = statusCode;
+    }
+
+    public ApiResponse(Boolean success, String message, int statusCode, Object body) {
+        this(success, message, statusCode);
+        this.body = body;
     }
 
     public Boolean getSuccess() {

@@ -49,7 +49,7 @@ public class ProductAPI {
 
 		if (!p.isPresent()) {ResponseEntity.notFound().build();}
 
-		return ResponseEntity.ok(new ApiResponse(true, "Sucess! Product found."));
+		return ResponseEntity.ok(new ApiResponse(true, "Sucess! Product found.", OK.value(), p));
 	}
 
 	@GetMapping(value = "/all")
@@ -79,11 +79,11 @@ public class ProductAPI {
 				.buildAndExpand(product.getId()).toUri();
 
         return ResponseEntity.created(location).body(new ApiResponse(true,
-				"Product created successfully!"));
+				"Product created successfully!", CREATED.value()));
 	}
 
 	@PostMapping(value = "/save-all")
-	public ResponseEntity<List<Product>> saveAllProducts(@RequestBody List<Product> products) {
+	public ResponseEntity<?> saveAllProducts(@RequestBody List<Product> products) {
 
 		try {
 			this.productService.saveAllProducts(products);
@@ -91,7 +91,7 @@ public class ProductAPI {
 			return ResponseEntity.badRequest().build();
 		}
 
-		return ResponseEntity.ok(products);
+		return ResponseEntity.ok(new ApiResponse(true, "All products saved successfully!", OK.value()));
 	}
 
 	@PutMapping(value = "/update")
@@ -134,6 +134,6 @@ public class ProductAPI {
 					"Product could not be deleted.", INTERNAL_SERVER_ERROR.value()));
         }
 
-        return ResponseEntity.ok(new ApiResponse(true, "Product deleted successfully!"));
+        return ResponseEntity.ok(new ApiResponse(true, "Product deleted successfully!", OK.value()));
     }
 }
