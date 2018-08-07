@@ -1,8 +1,8 @@
 package br.edu.ufcg.ccc.daca.backend.config;
 
-import br.edu.ufcg.ccc.daca.backend.security.CustomUserDetailsService;
-import br.edu.ufcg.ccc.daca.backend.security.JwtAuthenticationEntryPoint;
-import br.edu.ufcg.ccc.daca.backend.security.JwtAuthenticationFilter;
+import br.edu.ufcg.ccc.daca.backend.auth.user.CustomUserDetailsService;
+import br.edu.ufcg.ccc.daca.backend.auth.jwt.JwtAuthenticationEntryPoint;
+import br.edu.ufcg.ccc.daca.backend.auth.jwt.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,11 +27,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    final CustomUserDetailsService customUserDetailsService;
+
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
+    public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthenticationEntryPoint unauthorizedHandler) {
+        this.customUserDetailsService = customUserDetailsService;
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
