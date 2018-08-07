@@ -16,17 +16,4 @@ public class BackendApplication {
 		SpringApplication.run(BackendApplication.class, args);
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-                        .allowedOrigins(
-								"http://192.168.1.108:8080/**",
-                                " https://assueria-b46eb.firebaseapp.com/**"
-                        );
-			}
-		};
-	}
 }
